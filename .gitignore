@@ -1,0 +1,5 @@
+__pycache__
+*.pyc
+.eggs
+dist
+fancytable.egg-info
