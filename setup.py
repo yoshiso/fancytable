@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fancytable',
-    version='0.0.1',
+    version='0.0.2',
     description='Display pd.DataFrame with fancy colors.',
     license='MIT',
     author='Sho Yoshida',
