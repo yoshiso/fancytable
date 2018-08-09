@@ -29,7 +29,7 @@ class FancyTable:
 
         n = len(df)
 
-        z = Z(df).rank() - 1
+        z = df.rank() - 1
 
         if axis == 1:
             z = z.T
@@ -65,21 +65,6 @@ class FancyTable:
             df = df.T
 
         return df.style.apply(attn)
-
-
-def Z(df):
-    mean = df.mean(axis=1)
-    std = df.std(axis=1)
-    assert len(mean) == len(df)
-    assert len(std) == len(df)
-    z = df.sub(mean, axis=0).div(std, axis=0)
-    assert len(z) == len(df)
-    assert len(df.columns) == len(z.columns)
-
-    # mask more than 3 sigma
-    z[z > 3] = 3
-
-    return z
 
 
 def hex2rgb(hex):
