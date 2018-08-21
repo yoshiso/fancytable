@@ -37,4 +37,3 @@ ft.display(data, topk=1, axis=1)
 ```
 
 ![](https://i.gyazo.com/08d8d2268a7c63ca22a8d4569576ffb8.png)
-

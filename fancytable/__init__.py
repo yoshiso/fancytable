@@ -12,7 +12,7 @@ class FancyTable:
         '''
         self._grad = DEFAULT_GRADIENT if colors is None else colors
 
-    def display(self, df, axis=0, topk=None, bottomk=None):
+    def display(self, df, axis=0, topk=None, bottomk=None, columns=None, **kwargs):
         '''Display pd.DataFrame with colors.
 
         Add colors based on the strength of the z-score in each row or column.
@@ -22,8 +22,12 @@ class FancyTable:
             axis (int)       : axis to calculate z-score.
             topk (int)       : Add colors only for topk items.
             bottomk (int)    : Add colors only for bottomk items.
+            columns (list)   : Columns to add colors.
+            kwargs: (dict)   : Parameters to used as default style settings with
+                               pd.style.set_properties.
         '''
         assert axis in (0, 1)
+        assert type(columns) == list or columns is None
         if axis == 1:
             df = df.T
 
@@ -40,6 +44,11 @@ class FancyTable:
             hcolors = []
             for i in h.index:
                 rank = z[h.name][i]
+
+                if columns is not None:
+                    if h.name not in columns:
+                        hcolors.append(None)
+                        continue
 
                 if np.isnan(rank):
                     hcolors.append(None)
@@ -64,7 +73,7 @@ class FancyTable:
         if axis == 1:
             df = df.T
 
-        return df.style.apply(attn)
+        return df.style.set_properties(**kwargs).apply(attn)
 
 
 def hex2rgb(hex):
@@ -103,6 +112,7 @@ def grad(start, mid, end, n=10, by='hex'):
         _grad(mid, end, n=nout, by=by)
     )
 
+
 def _grad(start, end, n=10, by='hex'):
     '''
     Parameters:
@@ -138,5 +148,5 @@ def _grad(start, end, n=10, by='hex'):
 ft = FancyTable()
 
 
-def display(df, axis=0, topk=None, bottomk=None):
-    return ft.display(df, axis, topk, bottomk)
+def display(df, axis=0, topk=None, bottomk=None, columns=None, **kwargs):
+    return ft.display(df, axis, topk, bottomk, columns, **kwargs)
